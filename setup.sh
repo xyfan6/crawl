@@ -202,7 +202,16 @@ show_urls() {
         warn "Django Admin is NOT running  (use option 1 to start it)"
     fi
     echo
-    echo -e "  ${BOLD}Django Admin:${RESET}  http://localhost:${ADMIN_PORT}/admin/"
+    local internal_ip
+    internal_ip=$(ip route get 1.1.1.1 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="src") print $(i+1); exit}')
+    if [[ -z "$internal_ip" ]]; then
+        internal_ip=$(hostname -I 2>/dev/null | awk '{print $1}')
+    fi
+    if [[ -z "$internal_ip" ]]; then
+        internal_ip="localhost"
+        warn "Could not detect internal IP — falling back to localhost"
+    fi
+    echo -e "  ${BOLD}Django Admin:${RESET}  http://${internal_ip}:${ADMIN_PORT}/admin/"
     echo
     echo -e "  ${CYAN}[INFO]${RESET}  First time? Use option 5 to create a superuser."
     echo
