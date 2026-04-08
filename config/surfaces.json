@@ -1,0 +1,33 @@
+[
+  {"key": "reddit_autism",           "platform": "reddit",          "poll_interval_sec": 1800, "max_items": 50, "config": {"subreddit": "autism"}},
+  {"key": "reddit_aspergers",        "platform": "reddit",          "poll_interval_sec": 1800, "max_items": 50, "config": {"subreddit": "aspergers"}},
+  {"key": "reddit_autisticadults",   "platform": "reddit",          "poll_interval_sec": 1800, "max_items": 50, "config": {"subreddit": "AutisticAdults"}},
+  {"key": "reddit_askautism",        "platform": "reddit",          "poll_interval_sec": 3600, "max_items": 30, "config": {"subreddit": "AskAutism"}},
+  {"key": "reddit_neurodivergent",   "platform": "reddit",          "poll_interval_sec": 3600, "max_items": 30, "config": {"subreddit": "neurodivergent"}},
+  {"key": "reddit_autism_parenting", "platform": "reddit",          "poll_interval_sec": 3600, "max_items": 30, "config": {"subreddit": "Autism_Parenting"}},
+
+  {"key": "rss_spectrum_news",       "platform": "rss",             "poll_interval_sec": 1800, "max_items": 20, "config": {"feeds": ["https://spectrumnews.org/feed/", "https://thetransmitter.org/feed/"]}},
+  {"key": "rss_advocacy",            "platform": "rss",             "poll_interval_sec": 3600, "max_items": 20, "config": {"feeds": ["https://autisticadvocacy.org/feed/", "https://www.autismspeaks.org/feed"]}},
+  {"key": "rss_clinical",            "platform": "rss",             "poll_interval_sec": 3600, "max_items": 15, "config": {"feeds": ["https://www.psychologytoday.com/us/basics/autism/feed"]}},
+
+  {"key": "pubmed_autism",           "platform": "pubmed",          "poll_interval_sec": 14400, "max_items": 30,  "config": {"query": "autism spectrum disorder", "sort": "pub_date"}},
+  {"key": "europepmc_autism",        "platform": "europepmc",       "poll_interval_sec": 14400, "max_items": 30,  "config": {"query": "autism OR ASD OR autistic"}},
+  {"key": "semanticscholar_autism",  "platform": "semanticscholar", "poll_interval_sec": 14400, "max_items": 30,  "config": {"query": "autism spectrum disorder"}},
+  {"key": "crossref_autism",         "platform": "crossref",        "poll_interval_sec": 21600, "max_items": 30,  "config": {"query": "autism", "filter": "type:journal-article"}},
+  {"key": "biorxiv_autism",          "platform": "biorxiv",         "poll_interval_sec": 21600, "max_items": 20,  "config": {"query": "autism", "server": "medrxiv"}},
+  {"key": "doaj_autism",             "platform": "doaj",            "poll_interval_sec": 21600, "max_items": 20,  "config": {"query": "autism"}},
+  {"key": "openalex_autism",         "platform": "openalex",        "poll_interval_sec": 14400, "max_items": 50,  "config": {"query": "autism spectrum disorder", "filter": "open_access.is_oa:true"}},
+  {"key": "clinicaltrials_autism",   "platform": "clinicaltrials",  "poll_interval_sec": 86400, "max_items": 30,  "config": {"query": "autism", "status": "RECRUITING,ACTIVE_NOT_RECRUITING"}},
+  {"key": "core_autism",             "platform": "core",            "poll_interval_sec": 21600, "max_items": 30,  "config": {"query": "autism spectrum disorder"}},
+  {"key": "wikipedia_autism",        "platform": "wikipedia",       "poll_interval_sec": 86400, "max_items": 10,  "config": {"titles": ["Autism", "Autism spectrum disorder", "Asperger syndrome", "Applied behavior analysis"]}},
+
+  {"key": "hn_autism",               "platform": "hackernews",      "poll_interval_sec": 3600,  "max_items": 20, "config": {"query": "autism", "min_points": 10}},
+  {"key": "youtube_autism",          "platform": "youtube",         "poll_interval_sec": 7200,  "max_items": 20, "config": {"query": "autism", "min_views": 1000}},
+  {"key": "newsapi_autism",          "platform": "newsapi",         "poll_interval_sec": 3600,  "max_items": 30, "config": {"query": "autism OR autistic OR \"autism spectrum\""}},
+
+  {"key": "wrongplanet",               "platform": "html_crawl", "enabled": false, "poll_interval_sec": 7200,  "max_items": 30, "config": {"base_url": "https://wrongplanet.net/forums/"}},
+  {"key": "autism_society",            "platform": "html_crawl", "poll_interval_sec": 14400, "max_items": 20, "config": {"base_url": "https://autism-society.org/news/"}},
+  {"key": "autism_science_foundation", "platform": "html_crawl", "poll_interval_sec": 14400, "max_items": 20, "config": {"base_url": "https://autismsciencefoundation.org/blog/"}},
+  {"key": "frontiers_neuro",           "platform": "html_crawl", "poll_interval_sec": 21600, "max_items": 20, "config": {"base_url": "https://www.frontiersin.org/journals/neuroscience"}},
+  {"key": "autism_spectrum_news",      "platform": "html_crawl", "poll_interval_sec": 14400, "max_items": 20, "config": {"base_url": "https://autismspectrumnews.org/"}}
+]

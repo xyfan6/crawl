@@ -1,0 +1,71 @@
+from datetime import datetime
+from sqlalchemy import (
+    Boolean, Column, DateTime, Integer, Text, UniqueConstraint, Index
+)
+from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy.orm import DeclarativeBase
+from pgvector.sqlalchemy import Vector
+
+
+class Base(DeclarativeBase):
+    pass
+
+
+class CrawledItem(Base):
+    __tablename__ = "crawled_items"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    external_id = Column(Text, nullable=True)
+    source = Column(Text, nullable=False)
+    surface_key = Column(Text, nullable=False)
+    title = Column(Text, nullable=False)
+    url = Column(Text, nullable=False, unique=True)
+    description = Column(Text, nullable=True)
+    content_body = Column(Text, nullable=True)
+    author = Column(Text, nullable=True)
+    authors_json = Column(JSONB, nullable=True)
+    published_at = Column(DateTime(timezone=True), nullable=True)
+    collected_at = Column(DateTime(timezone=True), nullable=False, default=datetime.utcnow)
+    lang = Column(Text, nullable=True, default="en")
+    rank_position = Column(Integer, nullable=True)
+    engagement = Column(JSONB, nullable=True)
+    doi = Column(Text, nullable=True)
+    journal = Column(Text, nullable=True)
+    open_access = Column(Boolean, nullable=True)
+    raw_payload = Column(JSONB, nullable=True)
+    embedding = Column(Vector(1536), nullable=True)
+    embedding_model = Column(Text, nullable=True)
+    embedded_at = Column(DateTime(timezone=True), nullable=True)
+
+    __table_args__ = (
+        UniqueConstraint("url", name="uq_crawled_items_url"),
+        Index("idx_doi", "doi", unique=True, postgresql_where="doi IS NOT NULL"),
+        Index("idx_source_time", "source", "collected_at"),
+        Index("idx_surface_time", "surface_key", "collected_at"),
+    )
+
+
+class Surface(Base):
+    __tablename__ = "surfaces"
+
+    key = Column(Text, primary_key=True)
+    platform = Column(Text, nullable=False)
+    enabled = Column(Boolean, nullable=False, default=True)
+    poll_interval_sec = Column(Integer, nullable=False, default=3600)
+    max_items_per_run = Column(Integer, nullable=False, default=30)
+    config_json = Column(JSONB, nullable=True)
+    last_run_at = Column(DateTime(timezone=True), nullable=True)
+    last_cursor = Column(Text, nullable=True)
+    last_status = Column(Text, nullable=True)
+    last_error = Column(Text, nullable=True)
+    last_run_count = Column(Integer, nullable=True)
+    consecutive_fails = Column(Integer, nullable=False, default=0)
+
+
+class HttpCache(Base):
+    __tablename__ = "http_cache"
+
+    url_hash = Column(Text, primary_key=True)
+    etag = Column(Text, nullable=True)
+    last_modified = Column(Text, nullable=True)
+    expires_at = Column(DateTime(timezone=True), nullable=True)
