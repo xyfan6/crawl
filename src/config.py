@@ -21,8 +21,7 @@ class Settings:
     NEWSAPI_KEY: str = os.getenv("NEWSAPI_KEY", "")
 
     CRAWLER_EMAIL: str = os.getenv("CRAWLER_EMAIL", "autism-crawler@example.com")
-    OPENAI_API_KEY: str = os.getenv("OPENAI_API_KEY", "")
-    EMBED_MODEL: str = os.getenv("EMBED_MODEL", "text-embedding-3-small")
+    # Embeddings use fastembed (local, no API key). Model is hardcoded in src/embedder.py.
 
     REDIS_URL: str = os.getenv("REDIS_URL", "")
     LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO")

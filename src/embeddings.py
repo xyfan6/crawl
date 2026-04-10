@@ -2,7 +2,7 @@
 
 Schedule: run every 15 minutes, process up to 500 new items per batch.
 Embed text: title + ' ' + description[:500]
-Model: OpenAI text-embedding-3-small (1536 dims) or configured EMBED_MODEL.
+Model: nomic-ai/nomic-embed-text-v1.5 (768 dims, local via fastembed — no API key required)
 """
 from __future__ import annotations
 
@@ -12,7 +12,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy import select, update
 
-from src.config import settings
+from src.embedder import MODEL_NAME, embed_texts
 from src.storage.db import AsyncSessionLocal
 from src.storage.models import CrawledItem
 
@@ -25,17 +25,6 @@ _INTERVAL_SEC = 900  # 15 minutes
 
 async def run_once(max_items: int = _MAX_PER_RUN) -> int:
     """Generate embeddings for items missing them. Returns count of items embedded."""
-    if not settings.OPENAI_API_KEY:
-        logger.debug("OPENAI_API_KEY not set — skipping embedding run")
-        return 0
-
-    try:
-        from openai import AsyncOpenAI
-    except ImportError:
-        logger.warning("openai package not installed — cannot generate embeddings")
-        return 0
-
-    client = AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
     total_embedded = 0
 
     async with AsyncSessionLocal() as session:
@@ -50,20 +39,17 @@ async def run_once(max_items: int = _MAX_PER_RUN) -> int:
     if not rows:
         return 0
 
-    # Process in batches of BATCH_SIZE
+    # Process in batches of _BATCH_SIZE
     for batch_start in range(0, len(rows), _BATCH_SIZE):
-        batch = rows[batch_start: batch_start + _BATCH_SIZE]
+        batch = rows[batch_start : batch_start + _BATCH_SIZE]
         ids = [r.id for r in batch]
         texts = [_embed_text(r.title, r.description) for r in batch]
 
         try:
-            response = await client.embeddings.create(
-                model=settings.EMBED_MODEL,
-                input=texts,
-            )
-            vectors = [e.embedding for e in response.data]
+            # fastembed is synchronous — run in thread to avoid blocking the event loop
+            vectors = await asyncio.to_thread(embed_texts, texts)
         except Exception as exc:
-            logger.error("Embedding API call failed: %s", exc)
+            logger.error("Embedding failed: %s", exc)
             break
 
         async with AsyncSessionLocal() as session:
@@ -73,7 +59,7 @@ async def run_once(max_items: int = _MAX_PER_RUN) -> int:
                     .where(CrawledItem.id == row_id)
                     .values(
                         embedding=vector,
-                        embedding_model=settings.EMBED_MODEL,
+                        embedding_model=MODEL_NAME,
                         embedded_at=datetime.now(tz=timezone.utc),
                     )
                 )

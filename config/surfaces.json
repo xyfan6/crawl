@@ -9,6 +9,7 @@
   {"key": "rss_spectrum_news",       "platform": "rss",             "poll_interval_sec": 1800, "max_items": 20, "config": {"feeds": ["https://spectrumnews.org/feed/", "https://thetransmitter.org/feed/"]}},
   {"key": "rss_advocacy",            "platform": "rss",             "poll_interval_sec": 3600, "max_items": 20, "config": {"feeds": ["https://autisticadvocacy.org/feed/", "https://www.autismspeaks.org/feed"]}},
   {"key": "rss_clinical",            "platform": "rss",             "poll_interval_sec": 3600, "max_items": 15, "config": {"feeds": ["https://www.psychologytoday.com/us/basics/autism/feed"]}},
+  {"key": "rss_nih_news",            "platform": "rss",             "poll_interval_sec": 3600, "max_items": 20, "config": {"feeds": ["https://www.nih.gov/news-releases/feed.xml"]}},
 
   {"key": "pubmed_autism",           "platform": "pubmed",          "poll_interval_sec": 14400, "max_items": 30,  "config": {"query": "autism spectrum disorder", "sort": "pub_date"}},
   {"key": "europepmc_autism",        "platform": "europepmc",       "poll_interval_sec": 14400, "max_items": 30,  "config": {"query": "autism OR ASD OR autistic"}},

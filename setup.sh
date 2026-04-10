@@ -189,6 +189,31 @@ stop_existing_admin() {
     fi
 }
 
+# ── Option 6 — Stop all services ──────────────────────────────────────────────
+stop_all() {
+    echo
+    info "Stopping all services ..."
+    echo
+
+    if is_running; then
+        stop_existing
+    else
+        warn "Crawler is not running — nothing to stop."
+    fi
+
+    echo
+
+    if is_admin_running; then
+        stop_existing_admin
+    else
+        warn "Django admin is not running — nothing to stop."
+    fi
+
+    echo
+    success "All services stopped."
+    echo
+}
+
 # ── Option 4 — Show admin URLs ─────────────────────────────────────────────────
 show_urls() {
     echo
@@ -266,9 +291,10 @@ print_menu() {
     echo -e "  ${YELLOW}3)${RESET} Run database migrations"
     echo -e "  ${CYAN}4)${RESET} Show admin URLs"
     echo -e "  ${YELLOW}5)${RESET} Create Django superuser"
+    echo -e "  ${RED}6)${RESET} Stop all services     (crawler + Django admin)"
     echo -e "  ${RED}0)${RESET} Exit"
     echo
-    echo -n "  Select an option [0-5]: "
+    echo -n "  Select an option [0-6]: "
 }
 
 # ── Entry point ────────────────────────────────────────────────────────────────
@@ -284,6 +310,7 @@ while true; do
         3) only_migrate      ;;
         4) show_urls         ;;
         5) create_superuser  ;;
+        6) stop_all          ;;
         0)
             echo
             info "Goodbye."
@@ -291,7 +318,7 @@ while true; do
             exit 0
             ;;
         *)
-            error "Invalid option '${choice}'. Please enter 0–5."
+            error "Invalid option '${choice}'. Please enter 0–6."
             ;;
     esac
 done
